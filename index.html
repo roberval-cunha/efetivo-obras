@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Efetivo Obras" />
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <title>EFETIVO DAS OBRAS</title>
+  <script>
+    (function () {
+      var iconUrl = '/icon.png';
+
+      var manifest = {
+        name: 'EFETIVO DAS OBRAS',
+        short_name: 'Efetivo Obras',
+        start_url: '/',
+        scope: '/',
+        display: 'standalone',
+        orientation: 'portrait',
+        background_color: '#0f172a',
+        theme_color: '#0f172a',
+        icons: [
+          { src: iconUrl, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: iconUrl, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+        ]
+      };
+      var link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+      document.head.appendChild(link);
+
+      if ('serviceWorker' in navigator) {
+        var swCode = "self.addEventListener('install', function(e) { self.skipWaiting(); }); self.addEventListener('activate', function(e) { e.waitUntil(clients.claim()); }); self.addEventListener('fetch', function(e) {});";
+        var swBlob = new Blob([swCode], { type: 'application/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function () {});
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      --navy-950: #090d16;
+      --navy-900: #0f172a;
+      --blue-900: #1e3a8a;
+      --blue-800: #1d4ed8;
+      --blue-100: #dbeafe;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-50: #ecfdf5;
+      --rose-700: #be123c;
+      --rose-600: #e11d48;
+      --rose-200: #fecdd3;
+      --rose-100: #ffe4e6;
+      --rose-50: #fff1f2;
+      --amber-700: #b45309;
+      --amber-100: #fef3c7;
+      --amber-50: #fffbeb;
+      --sky-700: #0369a1;
+      --sky-300: #7dd3fc;
+      --sky-100: #e0f2fe;
+      --sky-50: #f0f9ff;
+      --purple-700: #6d28d9;
+      --purple-100: #ede9fe;
+      --purple-50: #f5f3ff;
+      --slate-900: #0f172a;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-300: #cbd5e1;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--slate-100);
+      color: var(--slate-900);
+      line-height: 1.4;
+      min-height: 100vh;
+      padding-bottom: 28px;
+    }
+
+    button, input, select { font-family: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .hidden { display: none !important; }
+
+    /* CABEÇALHO CENTRALIZADO E LIMPO */
+    .app-header {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--blue-900) 100%);
+      color: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 4px solid var(--emerald-500);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.14);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    .header-inner {
+      padding: 12px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (min-width: 860px) {
+      .header-inner {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    @media (min-width: 860px) {
+      .brand-row {
+        width: auto;
+        justify-content: flex-start;
+      }
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      overflow: hidden;
+      background: var(--navy-950);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(16, 185, 129, 0.5);
+    }
+
+    .brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    @media (min-width: 860px) {
+      .brand-info {
+        align-items: flex-start;
+      }
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .sync-badge {
+      display: inline-block;
+      font-size: 0.63rem;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.22);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      white-space: nowrap;
+    }
+
+    .sync-badge.offline {
+      background: rgba(245, 158, 11, 0.22);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    @media (min-width: 860px) {
+      .header-controls {
+        width: auto;
+        justify-content: flex-end;
+      }
+    }
+
+    .date-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 3px 6px;
+      flex: 1;
+      max-width: 340px;
+    }
+
+    @media (min-width: 860px) {
+      .date-box { flex: initial; }
+    }
+
+    .date-nav-btn {
+      color: var(--slate-200);
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .date-input {
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.84rem;
+      padding: 3px 4px;
+      color-scheme: dark;
+      outline: none;
+      text-align: center;
+    }
+
+    .btn-install-top {
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: #38bdf8;
+      color: var(--navy-950);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-install-top:hover { background: #7dd3fc; }
+
+    /* CARDS & RESUMO */
+    .main-content {
+      padding: 14px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    }
+
+    .summary-section {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    @media (min-width: 760px) {
+      .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .kpi-card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .kpi-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--slate-600);
+    }
+
+    .kpi-value {
+      margin-top: 3px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .kpi-value strong { font-size: 1.3rem; font-weight: 800; }
+    .kpi-value span { font-size: 0.78rem; font-weight: 700; color: var(--slate-400); }
+
+    /* PAINEL DE 3 QUADROS: EFETIVO TOTAL | EFETIVO DO DIA | AUSÊNCIAS */
+    .totals-split-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .kpi-card.highlight-total,
+    .kpi-card.highlight-efetivo,
+    .kpi-card.highlight-ausencias {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px 6px;
+    }
+
+    .kpi-card.highlight-total .kpi-value,
+    .kpi-card.highlight-efetivo .kpi-value,
+    .kpi-card.highlight-ausencias .kpi-value {
+      justify-content: center;
+    }
+
+    .kpi-card.highlight-total {
+      background: var(--sky-100);
+      border: 2px solid var(--sky-700);
+    }
+
+    .kpi-card.highlight-total .kpi-label { color: var(--sky-700); }
+    .kpi-card.highlight-total .kpi-value strong { color: var(--sky-700); }
+
+    .kpi-card.highlight-efetivo {
+      background: var(--emerald-50);
+      border: 2px solid var(--emerald-500);
+    }
+
+    .kpi-card.highlight-efetivo .kpi-label { color: var(--emerald-600); }
+    .kpi-card.highlight-efetivo .kpi-value strong { color: var(--emerald-600); }
+
+    .kpi-card.highlight-ausencias {
+      background: var(--rose-50);
+      border: 2px solid var(--rose-200);
+    }
+
+    .kpi-card.highlight-ausencias .kpi-label { color: var(--rose-700); }
+    .kpi-card.highlight-ausencias .kpi-value strong { color: var(--rose-600); }
+
+    .actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding-top: 10px;
+      border-top: 1px solid var(--slate-100);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .btn-whatsapp { background: var(--emerald-600); color: var(--white); }
+    .btn-excel { background: var(--navy-900); color: var(--white); }
+    .btn-transfer { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+    .btn-obra { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .btn-add { background: var(--blue-100); color: var(--blue-900); }
+    .btn-danger-outline { background: var(--white); color: var(--rose-600); border: 1px solid #fecdd3; margin-left: auto; }
+
+    @media (max-width: 640px) {
+      .actions-bar .btn { flex: 1 1 calc(50% - 7px); }
+      .btn-danger-outline { margin-left: 0; }
+    }
+
+    /* FILTROS E APONTAMENTO */
+    .filter-panel {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--slate-300);
+      border-radius: 10px;
+      background: var(--slate-50);
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 3px;
+    }
+
+    .pill-btn {
+      padding: 7px 12px;
+      border-radius: 9px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      border: 1px solid var(--slate-200);
+    }
+
+    .pill-btn.active {
+      background: var(--navy-900);
+      color: var(--white);
+      border-color: var(--navy-900);
+    }
+
+    .teams-stack { display: flex; flex-direction: column; gap: 14px; }
+    .team-card { overflow: hidden; }
+
+    .team-card-header {
+      background: var(--navy-900);
+      color: var(--white);
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 3px solid var(--blue-800);
+    }
+
+    .team-card-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .team-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--emerald-500);
+      flex-shrink: 0;
+    }
+
+    .team-counter-badge {
+      background: var(--emerald-500);
+      color: var(--navy-950);
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 3px 9px;
+      border-radius: 7px;
+      white-space: nowrap;
+    }
+
+    .worker-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--slate-200);
+      background: var(--white);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .worker-row:last-child { border-bottom: none; }
+    .worker-row.is-present { background: #f0fdf4; }
+
+    .worker-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .worker-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+      color: var(--slate-600);
+      font-weight: 800;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .worker-row.is-present .worker-num {
+      background: var(--navy-900);
+      border-color: var(--navy-900);
+      color: var(--white);
+    }
+
+    .worker-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--slate-800);
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .worker-row.is-present .worker-name { color: var(--navy-950); font-weight: 800; }
+
+    .worker-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px;
+    }
+
+    .team-tag {
+      font-size: 0.64rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: var(--slate-200);
+      color: var(--slate-700);
+    }
+
+    .status-text { font-size: 0.72rem; font-weight: 700; color: var(--slate-400); }
+    .worker-row.is-present .status-text { color: var(--emerald-600); }
+
+    .worker-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .btn-row-transfer {
+      padding: 6px 9px;
+      border-radius: 8px;
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+      color: #0369a1;
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .btn-row-transfer:hover {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+    }
+
+    .x-checkbox {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      border: 2.5px solid var(--slate-400);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .worker-row.is-present .x-checkbox {
+      background: var(--emerald-500);
+      border-color: var(--navy-950);
+    }
+
+    .x-mark {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--navy-950);
+    }
+
+    /* SEÇÕES DE OCORRÊNCIA (FALTA, ATESTADO, FÉRIAS, EXAMES) */
+    .status-section-header {
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--white);
+    }
+
+    .status-header-FALTA { background: #9f1239; border-bottom: 3px solid var(--rose-600); }
+    .status-header-ATESTADO { background: #92400e; border-bottom: 3px solid #f59e0b; }
+    .status-header-FERIAS { background: #075985; border-bottom: 3px solid #0284c7; }
+    .status-header-EXAMES { background: #5b21b6; border-bottom: 3px solid #7c3aed; }
+
+    .status-badge-count {
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--navy-950);
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 3px 9px;
+      border-radius: 7px;
+      white-space: nowrap;
+    }
+
+    .status-empty-msg {
+      padding: 14px 16px;
+      font-size: 0.8rem;
+      color: var(--slate-500);
+      font-style: italic;
+    }
+
+    .status-worker-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--slate-200);
+      background: var(--white);
+    }
+
+    @media (min-width: 680px) {
+      .status-worker-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .status-worker-row:last-child { border-bottom: none; }
+
+    .status-worker-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .status-worker-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-worker-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-left: 38px;
+    }
+
+    @media (min-width: 680px) {
+      .status-worker-bottom {
+        padding-left: 0;
+        flex-shrink: 0;
+      }
+    }
+
+    .status-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-return-obra {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--emerald-50);
+      border: 1px solid var(--emerald-500);
+      color: var(--emerald-600);
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    /* MODAIS */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 13, 22, 0.68);
+      z-index: 60;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
+    }
+
+    .modal-header {
+      background: var(--navy-900);
+      color: var(--white);
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+    }
+
+    .modal-close { color: var(--slate-300); font-size: 1.3rem; font-weight: 800; }
+    .modal-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--slate-600); }
+    .form-control { padding: 9px 11px; border: 1.5px solid var(--slate-300); border-radius: 9px; font-size: 0.88rem; font-weight: 600; }
+
+    .dest-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--slate-100);
+      padding: 4px;
+      border-radius: 10px;
+    }
+
+    .dest-tab-btn {
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--slate-600);
+    }
+
+    .dest-tab-btn.active {
+      background: var(--navy-900);
+      color: var(--white);
+    }
+
+    .status-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .status-choice-btn {
+      padding: 11px 10px;
+      border-radius: 10px;
+      border: 2px solid var(--slate-200);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-align: center;
+      color: var(--slate-700);
+      background: var(--slate-50);
+    }
+
+    .status-choice-btn.selected-FALTA { background: var(--rose-50); border-color: var(--rose-600); color: var(--rose-700); }
+    .status-choice-btn.selected-ATESTADO { background: var(--amber-50); border-color: #f59e0b; color: var(--amber-700); }
+    .status-choice-btn.selected-FERIAS { background: var(--sky-50); border-color: #0284c7; color: var(--sky-700); }
+    .status-choice-btn.selected-EXAMES { background: var(--purple-50); border-color: #7c3aed; color: var(--purple-700); }
+
+    .toast-container {
+      position: fixed;
+      bottom: 18px;
+      right: 14px;
+      left: 14px;
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--navy-900);
+      color: var(--white);
+      border-left: 4px solid var(--emerald-500);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO CENTRALIZADO -->
+  <header class="app-header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="brand-row">
+          <div class="brand-left">
+            <div class="brand-icon">
+              <img src="/icon.png" alt="Ícone Efetivo das Obras" />
+            </div>
+            <div class="brand-info">
+              <h1 class="brand-title">EFETIVO DAS OBRAS</h1>
+              <span id="syncStatusBadge" class="sync-badge offline">
+                CONECTANDO NUVEM...
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-controls">
+          <div class="date-box">
+            <button type="button" class="date-nav-btn" onclick="changeDate(-1)">&lsaquo;</button>
+            <input type="date" id="dateSelector" class="date-input mono" value="2026-11-18" />
+            <button type="button" class="date-nav-btn" onclick="changeDate(1)">&rsaquo;</button>
+          </div>
+
+          <button type="button" id="btnInstallTop" class="btn-install-top" onclick="triggerInstallApp()">
+            Instalar app
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main class="main-content">
+    <div class="container" style="display: flex; flex-direction: column; gap: 14px;">
+
+      <!-- KPIs + Painel de 3 Quadros (Efetivo Total | Efetivo do Dia | Ausências) + Ações -->
+      <section class="card summary-section">
+        <div class="kpi-grid" id="kpiGridContainer"></div>
+        <div class="totals-split-grid" id="totalsSplitContainer"></div>
+
+        <div class="actions-bar">
+          <button type="button" class="btn btn-whatsapp" onclick="copyWhatsAppReport()">Copiar WhatsApp</button>
+          <button type="button" class="btn btn-excel" onclick="exportExcelCSV()">Exportar Excel (CSV)</button>
+          <button type="button" class="btn btn-transfer" onclick="openTransferModal()">&#8644; Transferir</button>
+          <button type="button" class="btn btn-obra" onclick="openObraModal()">+ Obra / Líder</button>
+          <button type="button" class="btn btn-add" onclick="openAddWorkerModal()">+ Colaborador</button>
+          <button type="button" class="btn btn-danger-outline" onclick="clearDayMarks()">Zerar Dia</button>
+        </div>
+      </section>
+
+      <!-- FILTROS E LISTAS DE OBRAS + OCORRÊNCIAS -->
+      <section style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="card filter-panel">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Buscar colaborador pelo nome..."
+            oninput="handleSearchInput()"
+          />
+          <div class="filter-pills" id="filterPillsContainer"></div>
+        </div>
+
+        <div id="teamsContainer" class="teams-stack"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL: INSTALAR APP -->
+  <div id="installModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Instalar Aplicativo no Celular</h3>
+        <button type="button" class="modal-close" onclick="closeModal('installModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.86rem; color: var(--slate-700);">
+          Instale o <strong>EFETIVO DAS OBRAS</strong> na tela inicial do seu celular para abrir em tela cheia:
+        </p>
+        <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 10px; padding: 12px; font-size: 0.82rem;">
+          <strong>Android (Google Chrome):</strong><br />
+          1. Toque nos <strong>3 pontinhos (&#8942;)</strong> no canto superior direito.<br />
+          2. Selecione <strong>"Instalar aplicativo"</strong> ou <strong>"Adicionar à tela inicial"</strong>.
+        </div>
+        <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 10px; padding: 12px; font-size: 0.82rem;">
+          <strong>iPhone / iPad (Safari):</strong><br />
+          1. Toque no ícone <strong>Compartilhar</strong> na barra inferior.<br />
+          2. Role para baixo e toque em <strong>"Adicionar à Tela de Início"</strong>.
+        </div>
+        <button type="button" class="btn btn-whatsapp" onclick="closeModal('installModal')">Entendi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TRANSFERIR COLABORADOR -->
+  <div id="transferModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>&#8644; Movimentar / Transferir Colaborador</h3>
+        <button type="button" class="modal-close" onclick="closeModal('transferModal')">&times;</button>
+      </div>
+      <form class="modal-body" onsubmit="confirmTransfer(event)">
+        <div class="form-group">
+          <label>Colaborador</label>
+          <select id="selectTransferWorker" class="form-control"></select>
+        </div>
+
+        <div class="form-group">
+          <label>Para onde deseja enviar?</label>
+          <div class="dest-tabs">
+            <button type="button" id="btnDestStatus" class="dest-tab-btn active" onclick="setTransferMode('status')">
+              Falta / Atestado / Férias / Exames
+            </button>
+            <button type="button" id="btnDestObra" class="dest-tab-btn" onclick="setTransferMode('obra')">
+              Outra Obra / Líder
+            </button>
+          </div>
+        </div>
+
+        <div id="transferStatusFields" class="form-group">
+          <label>Selecione a Seção do Dia</label>
+          <div class="status-choice-grid">
+            <button type="button" id="choice-FALTA" class="status-choice-btn selected-FALTA" onclick="selectStatusChoice('FALTA')">FALTA</button>
+            <button type="button" id="choice-ATESTADO" class="status-choice-btn" onclick="selectStatusChoice('ATESTADO')">ATESTADO</button>
+            <button type="button" id="choice-FERIAS" class="status-choice-btn" onclick="selectStatusChoice('FERIAS')">FÉRIAS</button>
+            <button type="button" id="choice-EXAMES" class="status-choice-btn" onclick="selectStatusChoice('EXAMES')">EXAMES</button>
+          </div>
+        </div>
+
+        <div id="transferObraFields" class="hidden" style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="form-group">
+            <label>Nova Obra / Equipe</label>
+            <select id="selectTransferObra" class="form-control" onchange="updateTransferLiderOptions()"></select>
+          </div>
+          <div class="form-group">
+            <label>Novo Líder</label>
+            <select id="selectTransferLider" class="form-control"></select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-whatsapp">Confirmar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NOVA OBRA / LÍDER -->
+  <div id="obraModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>+ Nova Obra / Equipe e Líder</h3>
+        <button type="button" class="modal-close" onclick="closeModal('obraModal')">&times;</button>
+      </div>
+      <form class="modal-body" onsubmit="saveNewObraLider(event)">
+        <div class="form-group">
+          <label>Nome da Obra / Equipe</label>
+          <input type="text" id="inputNewObra" class="form-control" placeholder="Ex: OBRA SERRA" required />
+        </div>
+        <div class="form-group">
+          <label>Nome do Líder Responsável</label>
+          <input type="text" id="inputNewLider" class="form-control" placeholder="Ex: CARLOS" required />
+        </div>
+        <button type="submit" class="btn btn-whatsapp">Salvar Obra e Líder</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NOVO COLABORADOR -->
+  <div id="addWorkerModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>+ Novo Colaborador</h3>
+        <button type="button" class="modal-close" onclick="closeModal('addWorkerModal')">&times;</button>
+      </div>
+      <form class="modal-body" onsubmit="saveNewWorker(event)">
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="inputWorkerName" class="form-control" placeholder="Ex: JOÃO DA SILVA" required />
+        </div>
+        <div class="form-group">
+          <label>Obra / Equipe</label>
+          <select id="selectWorkerObra" class="form-control" onchange="updateNewWorkerLiderOptions()"></select>
+        </div>
+        <div class="form-group">
+          <label>Líder</label>
+          <select id="selectWorkerLider" class="form-control"></select>
+        </div>
+        <button type="submit" class="btn btn-whatsapp">Adicionar e Marcar X</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var DEFAULT_FIREBASE_URL = 'https://efetivo-das-obras-default-rtdb.firebaseio.com';
+      var DEFAULT_ROOM_CODE = 'obras-cls-principal';
+
+      var DEFAULT_DATE = '2026-11-18';
+      var STORAGE_KEY = 'efetivo_obras_pwa_v13';
+      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v13';
+      var deferredInstallPrompt = null;
+
+      var STATUS_SECTIONS = [
+        { key: 'FALTA', label: 'FALTA' },
+        { key: 'ATESTADO', label: 'ATESTADO' },
+        { key: 'FERIAS', label: 'FÉRIAS' },
+        { key: 'EXAMES', label: 'EXAMES' }
+      ];
+
+      function getDefaultCatalog() {
+        return [
+          { obra: 'CLS', lideres: ['SÉRGIO', 'LEIDIMAR'] },
+          { obra: 'EQUIPE NASCIMENTO', lideres: ['MADRUGA'] },
+          { obra: 'ADM', lideres: ['ADM'] }
+        ];
+      }
+
+      function getDefaultRoster() {
+        return [
+          { id: 'cls-s-1', obra: 'CLS', lider: 'SÉRGIO', nome: 'SERGIO CARVALHO SANTOS', present: true },
+          { id: 'cls-s-2', obra: 'CLS', lider: 'SÉRGIO', nome: 'EDMILSON NASCIMENTO', present: true },
+          { id: 'cls-s-3', obra: 'CLS', lider: 'SÉRGIO', nome: 'SANDSON SANTOS DE JESUS', present: true },
+          { id: 'cls-s-4', obra: 'CLS', lider: 'SÉRGIO', nome: 'GEOVANI DUTRA DA COSTA', present: false },
+          { id: 'cls-s-5', obra: 'CLS', lider: 'SÉRGIO', nome: 'JAELES DE JESUS AMARAL', present: true },
+          { id: 'cls-s-6', obra: 'CLS', lider: 'SÉRGIO', nome: 'JOSE RAIMUNDO GONCALVES LIMA', present: true },
+          { id: 'cls-s-7', obra: 'CLS', lider: 'SÉRGIO', nome: 'COSME CASSIANO BOMFIM', present: false },
+          { id: 'cls-s-8', obra: 'CLS', lider: 'SÉRGIO', nome: 'RONY ANTÔNIO DA SILVA COSTA', present: true },
+          { id: 'cls-s-9', obra: 'CLS', lider: 'SÉRGIO', nome: 'ADENILTON ALVES DA SILVA', present: true },
+          { id: 'cls-s-10', obra: 'CLS', lider: 'SÉRGIO', nome: 'SERGIO MOREIRA ALVES', present: true },
+          { id: 'cls-s-11', obra: 'CLS', lider: 'SÉRGIO', nome: 'LEVI NICACIO PINHEIRO', present: true },
+          { id: 'cls-s-12', obra: 'CLS', lider: 'SÉRGIO', nome: 'WANDERSON Z. M. BERNARDINA', present: true },
+          { id: 'cls-s-13', obra: 'CLS', lider: 'SÉRGIO', nome: 'MAXSUEL DE OLIVEIRA SANTOS', present: true },
+          { id: 'cls-s-14', obra: 'CLS', lider: 'SÉRGIO', nome: 'LEANDRO NERES DE ARAUJO', present: true },
+          { id: 'cls-s-15', obra: 'CLS', lider: 'SÉRGIO', nome: 'JOCELINO FERREIRA DA MATA', present: true },
+          { id: 'cls-s-16', obra: 'CLS', lider: 'SÉRGIO', nome: 'WELLINGTON DE O. SOUZA JUNIOR', present: false },
+          { id: 'cls-l-1', obra: 'CLS', lider: 'LEIDIMAR', nome: 'LEIDIMAR BATISTA ROSA', present: false },
+          { id: 'cls-l-2', obra: 'CLS', lider: 'LEIDIMAR', nome: 'CELIO JUNIO SIQUEIRA DA SILVA', present: true },
+          { id: 'cls-l-3', obra: 'CLS', lider: 'LEIDIMAR', nome: 'JOSE ROSARIO DE JESUS', present: true },
+          { id: 'cls-l-4', obra: 'CLS', lider: 'LEIDIMAR', nome: 'MARLEY DA SILVA ARGENTINA', present: true },
+          { id: 'cls-l-5', obra: 'CLS', lider: 'LEIDIMAR', nome: 'ROBSON CLEY CORREA BATISTA', present: true },
+          { id: 'cls-l-6', obra: 'CLS', lider: 'LEIDIMAR', nome: 'GUILHERME SANTOS DE JESUS', present: true },
+          { id: 'nasc-m-1', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'ARTHUR GARCEZ ADRIANO', present: false },
+          { id: 'nasc-m-2', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'ALEXSANDRO DA SILVA FERREIRA', present: true },
+          { id: 'nasc-m-3', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'ELIANDRO PEREIRA DE SOUZA', present: true },
+          { id: 'nasc-m-4', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'ELIEZER DE JESUS SANTOS', present: true },
+          { id: 'nasc-m-5', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'JOÃO PEDRO DA SILVA', present: true },
+          { id: 'nasc-m-6', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'LEONARDO SOUZA DA SILVA', present: true },
+          { id: 'nasc-m-7', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'MATHEUS DO ROSARIO', present: false },
+          { id: 'nasc-m-8', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'WESLEY SANTOS CONCEIÇÃO', present: false },
+          { id: 'nasc-m-9', obra: 'EQUIPE NASCIMENTO', lider: 'MADRUGA', nome: 'DANIEL FERREIRA DA CONCEIÇÃO', present: false },
+          { id: 'adm-1', obra: 'ADM', lider: 'ADM', nome: 'PATRICIA MONTEIRO ANGELI', present: true }
+        ];
+      }
+
+      var state = {
+        currentDate: DEFAULT_DATE,
+        activeFilter: 'ALL',
+        searchQuery: '',
+        catalog: getDefaultCatalog(),
+        roster: getDefaultRoster(),
+        days: {},
+        statuses: {},
+        transferMode: 'status',
+        selectedStatusChoice: 'FALTA'
+      };
+
+      function esc(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function formatDateBR(iso) {
+        var p = iso.split('-');
+        return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso;
+      }
+
+      function getDayMap(dateStr) {
+        if (!state.days[dateStr]) {
+          var map = {};
+          for (var i = 0; i < state.roster.length; i++) {
+            var w = state.roster[i];
+            map[w.id] = dateStr === DEFAULT_DATE ? Boolean(w.present) : false;
+          }
+          state.days[dateStr] = map;
+        }
+        return state.days[dateStr];
+      }
+
+      function getDayStatusMap(dateStr) {
+        if (!state.statuses[dateStr]) {
+          state.statuses[dateStr] = {};
+        }
+        return state.statuses[dateStr];
+      }
+
+      function saveLocal() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            catalog: state.catalog,
+            roster: state.roster,
+            days: state.days,
+            statuses: state.statuses
+          }));
+        } catch (e) {}
+        pushToCloud();
+      }
+
+      function loadLocal() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed.catalog) state.catalog = parsed.catalog;
+            if (parsed.roster) state.roster = parsed.roster;
+            if (parsed.days) state.days = parsed.days;
+            if (parsed.statuses) state.statuses = parsed.statuses;
+          }
+        } catch (e) {}
+        getDayMap(state.currentDate);
+        getDayStatusMap(state.currentDate);
+      }
+
+      /* SINCRONIZAÇÃO NUVEM AUTOMÁTICA */
+      function updateSyncBadge(online, text) {
+        var badge = document.getElementById('syncStatusBadge');
+        badge.textContent = text;
+        if (online) badge.classList.remove('offline');
+        else badge.classList.add('offline');
+      }
+
+      function pushToCloud() {
+        var cleanUrl = DEFAULT_FIREBASE_URL.replace(/\/+$/, '');
+        var endpoint = cleanUrl + '/efetivo/' + encodeURIComponent(DEFAULT_ROOM_CODE) + '.json';
+        fetch(endpoint, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            catalog: state.catalog,
+            roster: state.roster,
+            days: state.days,
+            statuses: state.statuses,
+            updatedAt: Date.now()
+          })
+        }).then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          updateSyncBadge(true, 'NUVEM SINCRONIZADA');
+        }).catch(function () {
+          updateSyncBadge(false, 'OFFLINE (SALVO LOCAL)');
+        });
+      }
+
+      function syncNowFromCloud() {
+        var cleanUrl = DEFAULT_FIREBASE_URL.replace(/\/+$/, '');
+        var endpoint = cleanUrl + '/efetivo/' + encodeURIComponent(DEFAULT_ROOM_CODE) + '.json';
+        fetch(endpoint).then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        }).then(function (data) {
+          if (data && data.roster) {
+            state.catalog = data.catalog || state.catalog;
+            state.roster = data.roster;
+            state.days = data.days || state.days;
+            state.statuses = data.statuses || state.statuses;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+              catalog: state.catalog,
+              roster: state.roster,
+              days: state.days,
+              statuses: state.statuses
+            }));
+            renderAll();
+          } else if (data === null) {
+            pushToCloud();
+          }
+          updateSyncBadge(true, 'NUVEM SINCRONIZADA');
+        }).catch(function () {
+          updateSyncBadge(false, 'OFFLINE (SALVO LOCAL)');
+        });
+      }
+
+      /* INSTALAÇÃO PWA E OCULTAÇÃO AUTOMÁTICA APÓS INSTALAR */
+      function hideInstallButtons() {
+        var topBtn = document.getElementById('btnInstallTop');
+        if (topBtn) topBtn.classList.add('hidden');
+        try {
+          localStorage.setItem(INSTALLED_FLAG_KEY, '1');
+        } catch (e) {}
+      }
+
+      function checkIfAlreadyInstalled() {
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        var wasInstalledFlag = false;
+        try {
+          wasInstalledFlag = localStorage.getItem(INSTALLED_FLAG_KEY) === '1';
+        } catch (e) {}
+
+        if (isStandalone || wasInstalledFlag) {
+          hideInstallButtons();
+        }
+      }
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        if (!isStandalone) {
+          var topBtn = document.getElementById('btnInstallTop');
+          if (topBtn) topBtn.classList.remove('hidden');
+        }
+      });
+
+      window.addEventListener('appinstalled', function () {
+        deferredInstallPrompt = null;
+        hideInstallButtons();
+        showToast('Aplicativo instalado com sucesso!');
+      });
+
+      window.triggerInstallApp = function () {
+        if (deferredInstallPrompt) {
+          deferredInstallPrompt.prompt();
+          deferredInstallPrompt.userChoice.then(function (choice) {
+            if (choice && choice.outcome === 'accepted') {
+              hideInstallButtons();
+            }
+            deferredInstallPrompt = null;
+          });
+        } else {
+          document.getElementById('installModal').classList.add('open');
+        }
+      };
+
+      window.closeModal = function (id) {
+        document.getElementById(id).classList.remove('open');
+      };
+
+      /* INTERAÇÕES PRINCIPAIS */
+      window.togglePresence = function (id) {
+        var map = getDayMap(state.currentDate);
+        map[id] = !map[id];
+        saveLocal();
+        renderAll();
+      };
+
+      window.returnWorkerToObra = function (id) {
+        var statusMap = getDayStatusMap(state.currentDate);
+        delete statusMap[id];
+        saveLocal();
+        renderAll();
+        showToast('Colaborador retornado para a equipe da obra!');
+      };
+
+      window.changeDate = function (delta) {
+        var p = state.currentDate.split('-');
+        var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+        d.setDate(d.getDate() + delta);
+        var next = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        state.currentDate = next;
+        document.getElementById('dateSelector').value = next;
+        getDayMap(next);
+        getDayStatusMap(next);
+        renderAll();
+      };
+
+      window.setFilter = function (key) {
+        state.activeFilter = key;
+        renderAll();
+      };
+
+      window.handleSearchInput = function () {
+        state.searchQuery = document.getElementById('searchInput').value.trim().toUpperCase();
+        renderLists();
+      };
+
+      function getPairs() {
+        var list = [];
+        for (var i = 0; i < state.catalog.length; i++) {
+          var item = state.catalog[i];
+          for (var j = 0; j < item.lideres.length; j++) {
+            list.push({ key: item.obra + '|' + item.lideres[j], obra: item.obra, lider: item.lideres[j] });
+          }
+        }
+        return list;
+      }
+
+      function renderAll() {
+        var map = getDayMap(state.currentDate);
+        var statusMap = getDayStatusMap(state.currentDate);
+        var pairs = getPairs();
+        var totalPresent = 0;
+        var totalActiveInObras = 0;
+        var totalRoster = state.roster.length;
+
+        for (var i = 0; i < totalRoster; i++) {
+          var w = state.roster[i];
+          if (!statusMap[w.id]) {
+            totalActiveInObras++;
+            if (map[w.id]) totalPresent++;
+          }
+        }
+
+        var totalAusencias = totalRoster - totalPresent;
+        var totalFormatted = String(totalRoster).padStart(2, '0');
+        var efetivoDiaFormatted = String(totalPresent).padStart(2, '0');
+        var ausenciasFormatted = String(totalAusencias).padStart(2, '0');
+
+        var kpiHtml = '';
+        var pillsHtml = '<button type="button" class="pill-btn' + (state.activeFilter === 'ALL' ? ' active' : '') + '" onclick="setFilter(\'ALL\')">Todos (' + totalPresent + '/' + totalActiveInObras + ')</button>';
+
+        for (var p = 0; p < pairs.length; p++) {
+          var pair = pairs[p];
+          var members = state.roster.filter(function (w) {
+            return w.obra === pair.obra && w.lider === pair.lider && !statusMap[w.id];
+          });
+          var pres = members.filter(function (w) { return Boolean(map[w.id]); }).length;
+          var label = pair.obra === pair.lider ? pair.obra : pair.lider + ' (' + pair.obra + ')';
+
+          kpiHtml += '<div class="kpi-card"><div class="kpi-label">TOTAL ' + esc(label) + '</div><div class="kpi-value"><strong class="mono">' + pres + '</strong><span class="mono">/ ' + members.length + '</span></div></div>';
+          pillsHtml += '<button type="button" class="pill-btn' + (state.activeFilter === pair.key ? ' active' : '') + '" onclick="setFilter(\'' + esc(pair.key) + '\')">' + esc(label) + ' (' + pres + '/' + members.length + ')</button>';
+        }
+
+        for (var s = 0; s < STATUS_SECTIONS.length; s++) {
+          var sec = STATUS_SECTIONS[s];
+          var secCount = state.roster.filter(function (w) { return statusMap[w.id] === sec.key; }).length;
+          pillsHtml += '<button type="button" class="pill-btn' + (state.activeFilter === 'STATUS_' + sec.key ? ' active' : '') + '" onclick="setFilter(\'STATUS_' + sec.key + '\')">' + sec.label + ' (' + secCount + ')</button>';
+        }
+
+        var splitHtml = '';
+        splitHtml += '<div class="kpi-card highlight-total"><div class="kpi-label">EFETIVO TOTAL</div><div class="kpi-value"><strong class="mono">' + totalFormatted + '</strong></div></div>';
+        splitHtml += '<div class="kpi-card highlight-efetivo"><div class="kpi-label">EFETIVO DO DIA</div><div class="kpi-value"><strong class="mono">' + efetivoDiaFormatted + '</strong></div></div>';
+        splitHtml += '<div class="kpi-card highlight-ausencias"><div class="kpi-label">AUSÊNCIAS</div><div class="kpi-value"><strong class="mono">' + ausenciasFormatted + '</strong></div></div>';
+
+        document.getElementById('kpiGridContainer').innerHTML = kpiHtml;
+        document.getElementById('totalsSplitContainer').innerHTML = splitHtml;
+        document.getElementById('filterPillsContainer').innerHTML = pillsHtml;
+
+        renderLists();
+      }
+
+      function renderLists() {
+        var map = getDayMap(state.currentDate);
+        var statusMap = getDayStatusMap(state.currentDate);
+        var pairs = getPairs();
+        var html = '';
+
+        // 1. Renderiza Equipes nas Obras
+        for (var i = 0; i < pairs.length; i++) {
+          var pair = pairs[i];
+          if (state.activeFilter !== 'ALL' && state.activeFilter !== pair.key) continue;
+
+          var allMembers = state.roster.filter(function (w) {
+            return w.obra === pair.obra && w.lider === pair.lider && !statusMap[w.id];
+          });
+          var filtered = allMembers.filter(function (w) {
+            return !state.searchQuery || w.nome.toUpperCase().indexOf(state.searchQuery) !== -1;
+          });
+          if (state.searchQuery && filtered.length === 0) continue;
+
+          var presCount = allMembers.filter(function (w) { return Boolean(map[w.id]); }).length;
+          html += '<div class="card team-card">';
+          html += '  <div class="team-card-header">';
+          html += '    <div class="team-card-title"><span class="team-dot"></span><span>OBRA: ' + esc(pair.obra) + ' &mdash; LÍDER: ' + esc(pair.lider) + '</span></div>';
+          html += '    <span class="team-counter-badge mono">' + presCount + ' / ' + allMembers.length + '</span>';
+          html += '  </div>';
+
+          if (filtered.length === 0) {
+            html += '  <div class="status-empty-msg">Nenhum colaborador ativo nesta equipe hoje.</div>';
+          } else {
+            for (var j = 0; j < filtered.length; j++) {
+              var w = filtered[j];
+              var isPres = Boolean(map[w.id]);
+              html += '<div class="worker-row' + (isPres ? ' is-present' : '') + '" onclick="togglePresence(\'' + esc(w.id) + '\')">';
+              html += '  <div class="worker-info">';
+              html += '    <div class="worker-num mono">' + (j + 1) + '</div>';
+              html += '    <div style="min-width:0;">';
+              html += '      <div class="worker-name">' + esc(w.nome) + '</div>';
+              html += '      <div class="worker-meta"><span class="team-tag">' + esc(pair.lider) + '</span><span class="status-text">' + (isPres ? 'Presente (X)' : 'Não marcado') + '</span></div>';
+              html += '    </div>';
+              html += '  </div>';
+              html += '  <div class="worker-actions-right">';
+              html += '    <button type="button" class="btn-row-transfer" onclick="event.stopPropagation(); openTransferModal(\'' + esc(w.id) + '\')">&#8644; Transferir</button>';
+              html += '    <div class="x-checkbox">' + (isPres ? '<span class="x-mark">X</span>' : '') + '</div>';
+              html += '  </div>';
+              html += '</div>';
+            }
+          }
+          html += '</div>';
+        }
+
+        // 2. Renderiza Seções: FALTA, ATESTADO, FÉRIAS, EXAMES
+        for (var s = 0; s < STATUS_SECTIONS.length; s++) {
+          var sec = STATUS_SECTIONS[s];
+          if (state.activeFilter !== 'ALL' && state.activeFilter !== 'STATUS_' + sec.key) continue;
+
+          var secMembers = state.roster.filter(function (w) {
+            return statusMap[w.id] === sec.key;
+          });
+          var secFiltered = secMembers.filter(function (w) {
+            return !state.searchQuery || w.nome.toUpperCase().indexOf(state.searchQuery) !== -1;
+          });
+          if (state.searchQuery && secFiltered.length === 0) continue;
+
+          html += '<div class="card team-card">';
+          html += '  <div class="status-section-header status-header-' + sec.key + '">';
+          html += '    <div class="team-card-title"><span>' + sec.label + '</span></div>';
+          html += '    <span class="status-badge-count mono">' + secMembers.length + '</span>';
+          html += '  </div>';
+
+          if (secFiltered.length === 0) {
+            html += '  <div class="status-empty-msg">Nenhum colaborador em ' + sec.label.toLowerCase() + ' nesta data.</div>';
+          } else {
+            for (var k = 0; k < secFiltered.length; k++) {
+              var sw = secFiltered[k];
+              html += '<div class="status-worker-row">';
+              html += '  <div class="status-worker-top">';
+              html += '    <div class="worker-num mono">' + (k + 1) + '</div>';
+              html += '    <div class="status-worker-name">' + esc(sw.nome) + '</div>';
+              html += '  </div>';
+              html += '  <div class="status-worker-bottom">';
+              html += '    <span class="team-tag">' + esc(sw.obra + ' / ' + sw.lider) + '</span>';
+              html += '    <div class="status-actions-group">';
+              html += '      <button type="button" class="btn-row-transfer" onclick="openTransferModal(\'' + esc(sw.id) + '\')">&#8644; Alterar</button>';
+              html += '      <button type="button" class="btn-return-obra" onclick="returnWorkerToObra(\'' + esc(sw.id) + '\')">&#8617; Retornar à Obra</button>';
+              html += '    </div>';
+              html += '  </div>';
+              html += '</div>';
+            }
+          }
+          html += '</div>';
+        }
+
+        document.getElementById('teamsContainer').innerHTML = html;
+      }
+
+      /* MODAL DE TRANSFERÊNCIA (OCORRÊNCIA OU OUTRA OBRA) */
+      window.setTransferMode = function (mode) {
+        state.transferMode = mode;
+        var isStatus = mode === 'status';
+        document.getElementById('btnDestStatus').classList.toggle('active', isStatus);
+        document.getElementById('btnDestObra').classList.toggle('active', !isStatus);
+        document.getElementById('transferStatusFields').classList.toggle('hidden', !isStatus);
+        document.getElementById('transferObraFields').classList.toggle('hidden', isStatus);
+      };
+
+      window.selectStatusChoice = function (statusKey) {
+        state.selectedStatusChoice = statusKey;
+        for (var i = 0; i < STATUS_SECTIONS.length; i++) {
+          var k = STATUS_SECTIONS[i].key;
+          var btn = document.getElementById('choice-' + k);
+          if (btn) {
+            btn.className = 'status-choice-btn' + (k === statusKey ? ' selected-' + k : '');
+          }
+        }
+      };
+
+      window.openTransferModal = function (workerId) {
+        var selW = document.getElementById('selectTransferWorker');
+        selW.innerHTML = state.roster.map(function (w) {
+          return '<option value="' + esc(w.id) + '">' + esc(w.nome) + ' (' + esc(w.obra + '/' + w.lider) + ')</option>';
+        }).join('');
+        if (workerId) selW.value = workerId;
+
+        var selO = document.getElementById('selectTransferObra');
+        selO.innerHTML = state.catalog.map(function (c) {
+          return '<option value="' + esc(c.obra) + '">' + esc(c.obra) + '</option>';
+        }).join('');
+        updateTransferLiderOptions();
+
+        setTransferMode('status');
+        selectStatusChoice('FALTA');
+        document.getElementById('transferModal').classList.add('open');
+      };
+
+      window.updateTransferLiderOptions = function () {
+        var obra = document.getElementById('selectTransferObra').value;
+        var item = state.catalog.find(function (c) { return c.obra === obra; });
+        var selL = document.getElementById('selectTransferLider');
+        selL.innerHTML = (item ? item.lideres : []).map(function (l) {
+          return '<option value="' + esc(l) + '">' + esc(l) + '</option>';
+        }).join('');
+      };
+
+      window.confirmTransfer = function (e) {
+        e.preventDefault();
+        var id = document.getElementById('selectTransferWorker').value;
+        var w = state.roster.find(function (x) { return x.id === id; });
+        if (!w) return;
+
+        var map = getDayMap(state.currentDate);
+        var statusMap = getDayStatusMap(state.currentDate);
+
+        if (state.transferMode === 'status') {
+          statusMap[w.id] = state.selectedStatusChoice;
+          map[w.id] = false;
+          saveLocal();
+          renderAll();
+          showToast(w.nome + ' enviado para ' + state.selectedStatusChoice + '!');
+        } else {
+          var obra = document.getElementById('selectTransferObra').value;
+          var lider = document.getElementById('selectTransferLider').value;
+          w.obra = obra;
+          w.lider = lider;
+          delete statusMap[w.id];
+          saveLocal();
+          renderAll();
+          showToast(w.nome + ' transferido para ' + obra + ' (' + lider + ')');
+        }
+        closeModal('transferModal');
+      };
+
+      /* MODAIS: NOVA OBRA / LÍDER E NOVO COLABORADOR */
+      window.openObraModal = function () {
+        document.getElementById('obraModal').classList.add('open');
+      };
+
+      window.saveNewObraLider = function (e) {
+        e.preventDefault();
+        var obra = document.getElementById('inputNewObra').value.trim().toUpperCase();
+        var lider = document.getElementById('inputNewLider').value.trim().toUpperCase();
+        if (!obra || !lider) return;
+        var existing = state.catalog.find(function (c) { return c.obra === obra; });
+        if (!existing) state.catalog.push({ obra: obra, lideres: [lider] });
+        else if (existing.lideres.indexOf(lider) === -1) existing.lideres.push(lider);
+        document.getElementById('inputNewObra').value = '';
+        document.getElementById('inputNewLider').value = '';
+        saveLocal();
+        renderAll();
+        closeModal('obraModal');
+        showToast('Obra ' + obra + ' / Líder ' + lider + ' adicionados!');
+      };
+
+      window.openAddWorkerModal = function () {
+        var selO = document.getElementById('selectWorkerObra');
+        selO.innerHTML = state.catalog.map(function (c) {
+          return '<option value="' + esc(c.obra) + '">' + esc(c.obra) + '</option>';
+        }).join('');
+        updateNewWorkerLiderOptions();
+        document.getElementById('addWorkerModal').classList.add('open');
+      };
+
+      window.updateNewWorkerLiderOptions = function () {
+        var obra = document.getElementById('selectWorkerObra').value;
+        var item = state.catalog.find(function (c) { return c.obra === obra; });
+        var selL = document.getElementById('selectWorkerLider');
+        selL.innerHTML = (item ? item.lideres : []).map(function (l) {
+          return '<option value="' + esc(l) + '">' + esc(l) + '</option>';
+        }).join('');
+      };
+
+      window.saveNewWorker = function (e) {
+        e.preventDefault();
+        var nome = document.getElementById('inputWorkerName').value.trim().toUpperCase();
+        var obra = document.getElementById('selectWorkerObra').value;
+        var lider = document.getElementById('selectWorkerLider').value;
+        if (!nome) return;
+        var newId = 'w-' + Date.now();
+        state.roster.push({ id: newId, obra: obra, lider: lider, nome: nome, present: true });
+        getDayMap(state.currentDate)[newId] = true;
+        document.getElementById('inputWorkerName').value = '';
+        saveLocal();
+        renderAll();
+        closeModal('addWorkerModal');
+        showToast(nome + ' adicionado!');
+      };
+
+      window.clearDayMarks = function () {
+        var map = getDayMap(state.currentDate);
+        for (var k in map) map[k] = false;
+        state.statuses[state.currentDate] = {};
+        saveLocal();
+        renderAll();
+        showToast('Marcações e ocorrências do dia zeradas.');
+      };
+
+      /* WHATSAPP E EXCEL */
+      window.copyWhatsAppReport = function () {
+        var map = getDayMap(state.currentDate);
+        var statusMap = getDayStatusMap(state.currentDate);
+        var pairs = getPairs();
+        var activeRoster = state.roster.filter(function (w) { return !statusMap[w.id]; });
+        var totalPres = activeRoster.filter(function (w) { return Boolean(map[w.id]); }).length;
+        var totalAus = state.roster.length - totalPres;
+
+        var lines = [
+          '*EFETIVO DAS OBRAS*',
+          '*Data:* ' + formatDateBR(state.currentDate),
+          '*EFETIVO TOTAL:* ' + String(state.roster.length).padStart(2, '0'),
+          '*EFETIVO DO DIA:* ' + String(totalPres).padStart(2, '0'),
+          '*AUSÊNCIAS:* ' + String(totalAus).padStart(2, '0'),
+          '--------------------------------'
+        ];
+
+        for (var i = 0; i < pairs.length; i++) {
+          var p = pairs[i];
+          var pres = activeRoster.filter(function (w) { return w.obra === p.obra && w.lider === p.lider && map[w.id]; });
+          lines.push('\n*OBRA: ' + p.obra + ' - LÍDER: ' + p.lider + ' (' + pres.length + '):*');
+          for (var j = 0; j < pres.length; j++) {
+            lines.push((j + 1) + '. ' + pres[j].nome);
+          }
+        }
+
+        for (var s = 0; s < STATUS_SECTIONS.length; s++) {
+          var sec = STATUS_SECTIONS[s];
+          var secList = state.roster.filter(function (w) { return statusMap[w.id] === sec.key; });
+          if (secList.length > 0) {
+            lines.push('\n*' + sec.label + ' (' + secList.length + '):*');
+            for (var k = 0; k < secList.length; k++) {
+              lines.push((k + 1) + '. ' + secList[k].nome + ' (' + secList[k].obra + '/' + secList[k].lider + ')');
+            }
+          }
+        }
+
+        var ta = document.createElement('textarea');
+        ta.value = lines.join('\n');
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Relatório copiado para o WhatsApp!');
+      };
+
+      window.exportExcelCSV = function () {
+        var map = getDayMap(state.currentDate);
+        var statusMap = getDayStatusMap(state.currentDate);
+        var csv = '\uFEFFItem;Presença (X);Situação;Colaborador;Obra;Líder;Data\n';
+        for (var i = 0; i < state.roster.length; i++) {
+          var w = state.roster[i];
+          var st = statusMap[w.id] || (map[w.id] ? 'PRESENTE' : 'AUSENTE');
+          var mark = (!statusMap[w.id] && map[w.id]) ? 'X' : '';
+          csv += (i + 1) + ';' + mark + ';' + st + ';' + w.nome + ';' + w.obra + ';' + w.lider + ';' + formatDateBR(state.currentDate) + '\n';
+        }
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'EFETIVO_DAS_OBRAS_' + state.currentDate + '.csv';
+        a.click();
+        showToast('Planilha CSV baixada!');
+      };
+
+      function showToast(msg) {
+        var box = document.getElementById('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast';
+        el.textContent = msg;
+        box.appendChild(el);
+        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 2600);
+      }
+
+      /* INICIALIZAÇÃO */
+      checkIfAlreadyInstalled();
+      loadLocal();
+      document.getElementById('dateSelector').addEventListener('change', function (e) {
+        if (e.target.value) {
+          state.currentDate = e.target.value;
+          getDayMap(state.currentDate);
+          getDayStatusMap(state.currentDate);
+          renderAll();
+        }
+      });
+      syncNowFromCloud();
+      setInterval(syncNowFromCloud, 15000);
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
