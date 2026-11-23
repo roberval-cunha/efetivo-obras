@@ -1122,8 +1122,8 @@
       }
 
       var TODAY_ISO = getTodayISO();
-      var STORAGE_KEY = 'efetivo_obras_pwa_v14';
-      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v14';
+      var STORAGE_KEY = 'efetivo_obras_pwa_v15';
+      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v15';
       var deferredInstallPrompt = null;
 
       var STATUS_SECTIONS = [
@@ -1420,14 +1420,12 @@
         var statusMap = getDayStatusMap(state.currentDate);
         var pairs = getPairs();
         var totalPresent = 0;
-        var totalActiveInObras = 0;
         var totalRoster = state.roster.length;
 
         for (var i = 0; i < totalRoster; i++) {
           var w = state.roster[i];
-          if (!statusMap[w.id]) {
-            totalActiveInObras++;
-            if (map[w.id]) totalPresent++;
+          if (!statusMap[w.id] && map[w.id]) {
+            totalPresent++;
           }
         }
 
@@ -1437,18 +1435,22 @@
         var ausenciasFormatted = String(totalAusencias).padStart(2, '0');
 
         var kpiHtml = '';
-        var pillsHtml = '<button type="button" class="pill-btn' + (state.activeFilter === 'ALL' ? ' active' : '') + '" onclick="setFilter(\'ALL\')">Todos (' + totalPresent + '/' + totalActiveInObras + ')</button>';
+        var pillsHtml = '<button type="button" class="pill-btn' + (state.activeFilter === 'ALL' ? ' active' : '') + '" onclick="setFilter(\'ALL\')">Todos (' + totalPresent + '/' + totalRoster + ')</button>';
 
         for (var p = 0; p < pairs.length; p++) {
           var pair = pairs[p];
-          var members = state.roster.filter(function (w) {
-            return w.obra === pair.obra && w.lider === pair.lider && !statusMap[w.id];
+          /* Total geral cadastrado nesta equipe (inclui presentes, ausentes, férias, atestado, falta e exames) */
+          var allTeamMembers = state.roster.filter(function (w) {
+            return w.obra === pair.obra && w.lider === pair.lider;
           });
-          var pres = members.filter(function (w) { return Boolean(map[w.id]); }).length;
+          /* Presentes ativos nesta equipe */
+          var pres = allTeamMembers.filter(function (w) {
+            return !statusMap[w.id] && Boolean(map[w.id]);
+          }).length;
           var label = pair.obra === pair.lider ? pair.obra : pair.lider + ' (' + pair.obra + ')';
 
-          kpiHtml += '<div class="kpi-card"><div class="kpi-label">TOTAL ' + esc(label) + '</div><div class="kpi-value"><strong class="mono">' + pres + '</strong><span class="mono">/ ' + members.length + '</span></div></div>';
-          pillsHtml += '<button type="button" class="pill-btn' + (state.activeFilter === pair.key ? ' active' : '') + '" onclick="setFilter(\'' + esc(pair.key) + '\')">' + esc(label) + ' (' + pres + '/' + members.length + ')</button>';
+          kpiHtml += '<div class="kpi-card"><div class="kpi-label">TOTAL ' + esc(label) + '</div><div class="kpi-value"><strong class="mono">' + pres + '</strong><span class="mono">/ ' + allTeamMembers.length + '</span></div></div>';
+          pillsHtml += '<button type="button" class="pill-btn' + (state.activeFilter === pair.key ? ' active' : '') + '" onclick="setFilter(\'' + esc(pair.key) + '\')">' + esc(label) + ' (' + pres + '/' + allTeamMembers.length + ')</button>';
         }
 
         for (var s = 0; s < STATUS_SECTIONS.length; s++) {
@@ -1480,19 +1482,22 @@
           var pair = pairs[i];
           if (state.activeFilter !== 'ALL' && state.activeFilter !== pair.key) continue;
 
-          var allMembers = sortByNameAZ(state.roster.filter(function (w) {
-            return w.obra === pair.obra && w.lider === pair.lider && !statusMap[w.id];
+          var totalTeamMembers = state.roster.filter(function (w) {
+            return w.obra === pair.obra && w.lider === pair.lider;
+          });
+          var activeMembers = sortByNameAZ(totalTeamMembers.filter(function (w) {
+            return !statusMap[w.id];
           }));
-          var filtered = allMembers.filter(function (w) {
+          var filtered = activeMembers.filter(function (w) {
             return !state.searchQuery || w.nome.toUpperCase().indexOf(state.searchQuery) !== -1;
           });
           if (state.searchQuery && filtered.length === 0) continue;
 
-          var presCount = allMembers.filter(function (w) { return Boolean(map[w.id]); }).length;
+          var presCount = activeMembers.filter(function (w) { return Boolean(map[w.id]); }).length;
           html += '<div class="card team-card">';
           html += '  <div class="team-card-header">';
           html += '    <div class="team-card-title"><span class="team-dot"></span><span>OBRA: ' + esc(pair.obra) + ' &mdash; LÍDER: ' + esc(pair.lider) + '</span></div>';
-          html += '    <span class="team-counter-badge mono">' + presCount + ' / ' + allMembers.length + '</span>';
+          html += '    <span class="team-counter-badge mono">' + presCount + ' / ' + totalTeamMembers.length + '</span>';
           html += '  </div>';
 
           if (filtered.length === 0) {
@@ -1814,10 +1819,13 @@
 
         for (var i = 0; i < pairs.length; i++) {
           var p = pairs[i];
+          var totalTeam = state.roster.filter(function (w) {
+            return w.obra === p.obra && w.lider === p.lider;
+          }).length;
           var pres = sortByNameAZ(activeRoster.filter(function (w) {
             return w.obra === p.obra && w.lider === p.lider && map[w.id];
           }));
-          lines.push('\n*OBRA: ' + p.obra + ' - LÍDER: ' + p.lider + ' (' + pres.length + '):*');
+          lines.push('\n*OBRA: ' + p.obra + ' - LÍDER: ' + p.lider + ' (' + pres.length + '/' + totalTeam + '):*');
           for (var j = 0; j < pres.length; j++) {
             lines.push((j + 1) + '. ' + pres[j].nome);
           }
