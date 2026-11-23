@@ -963,7 +963,7 @@
             <div class="brand-info">
               <h1 class="brand-title">EFETIVO DAS OBRAS</h1>
               <span id="syncStatusBadge" class="sync-badge offline">
-                CONECTANDO NUVEM...
+                MODO LOCAL (OFFLINE)
               </span>
             </div>
           </div>
@@ -1162,6 +1162,8 @@
     (function () {
       'use strict';
 
+      /* CHAVE DE CONTROLE DO BANCO ONLINE: false = 100% LOCAL | true = NUVEM FIREBASE */
+      var ENABLE_CLOUD_SYNC = false;
       var DEFAULT_FIREBASE_URL = 'https://efetivo-das-obras-default-rtdb.firebaseio.com';
       var DEFAULT_ROOM_CODE = 'obras-cls-principal';
 
@@ -1242,7 +1244,7 @@
         searchQuery: '',
         catalog: getDefaultCatalog(),
         roster: getDefaultRoster(),
-        teamOrder: [], // Lista ordenada de chaves 'OBRA|LIDER'
+        teamOrder: [],
         days: {},
         statuses: {},
         transferMode: 'status',
@@ -1328,7 +1330,9 @@
             statuses: state.statuses
           }));
         } catch (e) {}
-        pushToCloud();
+        if (ENABLE_CLOUD_SYNC) {
+          pushToCloud();
+        }
       }
 
       function loadLocal() {
@@ -1350,7 +1354,7 @@
         getDayStatusMap(state.currentDate);
       }
 
-      /* SINCRONIZAÇÃO NUVEM AUTOMÁTICA */
+      /* SINCRONIZAÇÃO NUVEM (DESATIVADA TEMPORARIAMENTE QUANDO ENABLE_CLOUD_SYNC = false) */
       function updateSyncBadge(online, text) {
         var badge = document.getElementById('syncStatusBadge');
         badge.textContent = text;
@@ -1359,6 +1363,7 @@
       }
 
       function pushToCloud() {
+        if (!ENABLE_CLOUD_SYNC) return;
         var cleanUrl = DEFAULT_FIREBASE_URL.replace(/\/+$/, '');
         var endpoint = cleanUrl + '/efetivo/' + encodeURIComponent(DEFAULT_ROOM_CODE) + '.json';
         fetch(endpoint, {
@@ -1381,6 +1386,10 @@
       }
 
       function syncNowFromCloud() {
+        if (!ENABLE_CLOUD_SYNC) {
+          updateSyncBadge(false, 'MODO LOCAL (OFFLINE)');
+          return;
+        }
         var cleanUrl = DEFAULT_FIREBASE_URL.replace(/\/+$/, '');
         var endpoint = cleanUrl + '/efetivo/' + encodeURIComponent(DEFAULT_ROOM_CODE) + '.json';
         fetch(endpoint).then(function (r) {
@@ -1612,7 +1621,7 @@
         var pairs = getPairs();
         var html = '';
 
-        // 1. Renderiza Equipes nas Obras (NA ORDEM DEFINIDA PELO USUÁRIO + ALFABÉTICA INTERNA)
+        // 1. Renderiza Equipes nas Obras
         for (var i = 0; i < pairs.length; i++) {
           var pair = pairs[i];
           if (state.activeFilter !== 'ALL' && state.activeFilter !== pair.key) continue;
@@ -1673,7 +1682,7 @@
           html += '</div>';
         }
 
-        // 2. Renderiza Seções: FALTA, ATESTADO, FÉRIAS, EXAMES (ORDEM ALFABÉTICA CRESCENTE)
+        // 2. Renderiza Seções: FALTA, ATESTADO, FÉRIAS, EXAMES
         for (var s = 0; s < STATUS_SECTIONS.length; s++) {
           var sec = STATUS_SECTIONS[s];
           if (state.activeFilter !== 'ALL' && state.activeFilter !== 'STATUS_' + sec.key) continue;
@@ -1949,7 +1958,7 @@
         showToast('Marcações e ocorrências do dia zeradas.');
       };
 
-      /* WHATSAPP E EXCEL (EM ORDEM ALFABÉTICA E NA ORDEM DOS GRUPOS) */
+      /* WHATSAPP E EXCEL */
       window.copyWhatsAppReport = function () {
         var map = getDayMap(state.currentDate);
         var statusMap = getDayStatusMap(state.currentDate);
