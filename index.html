@@ -309,11 +309,17 @@
       .kpi-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
+    /* TODOS OS QUADROS DE TOTAIS CENTRALIZADOS */
     .kpi-card {
       background: var(--slate-50);
       border: 1px solid var(--slate-200);
       border-radius: 12px;
       padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .kpi-label {
@@ -327,6 +333,7 @@
       margin-top: 3px;
       display: flex;
       align-items: baseline;
+      justify-content: center;
       gap: 4px;
     }
 
@@ -343,18 +350,7 @@
     .kpi-card.highlight-total,
     .kpi-card.highlight-efetivo,
     .kpi-card.highlight-ausencias {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
       padding: 10px 6px;
-    }
-
-    .kpi-card.highlight-total .kpi-value,
-    .kpi-card.highlight-efetivo .kpi-value,
-    .kpi-card.highlight-ausencias .kpi-value {
-      justify-content: center;
     }
 
     .kpi-card.highlight-total {
@@ -501,7 +497,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 11px 14px;
+      padding: 9px 14px;
       border-bottom: 1px solid var(--slate-200);
       background: var(--white);
       cursor: pointer;
@@ -520,14 +516,14 @@
     }
 
     .worker-num {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 7px;
       background: var(--slate-100);
       border: 1px solid var(--slate-300);
       color: var(--slate-600);
       font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -555,7 +551,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 6px;
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .team-tag {
@@ -573,19 +569,24 @@
     .worker-actions-right {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       flex-shrink: 0;
     }
 
+    /* BOTÃO APENAS COM SÍMBOLO DE TRANSFERÊNCIA */
     .btn-row-transfer {
-      padding: 6px 9px;
+      width: 34px;
+      height: 34px;
       border-radius: 8px;
       background: var(--slate-100);
       border: 1px solid var(--slate-300);
       color: #0369a1;
-      font-size: 0.72rem;
+      font-size: 0.95rem;
       font-weight: 800;
-      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .btn-row-transfer:hover {
@@ -593,11 +594,12 @@
       border-color: #7dd3fc;
     }
 
+    /* CAIXA DE MARCAÇÃO (X) MENOR */
     .x-checkbox {
-      width: 46px;
-      height: 46px;
-      border-radius: 11px;
-      border: 2.5px solid var(--slate-400);
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      border: 2px solid var(--slate-400);
       background: var(--white);
       display: flex;
       align-items: center;
@@ -611,9 +613,10 @@
     }
 
     .x-mark {
-      font-size: 1.65rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: var(--navy-950);
+      line-height: 1;
     }
 
     /* SEÇÕES DE OCORRÊNCIA (FALTA, ATESTADO, FÉRIAS, EXAMES) */
@@ -652,7 +655,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      padding: 12px 14px;
+      padding: 11px 14px;
       border-bottom: 1px solid var(--slate-200);
       background: var(--white);
     }
@@ -688,7 +691,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding-left: 38px;
+      padding-left: 36px;
     }
 
     @media (min-width: 680px) {
@@ -733,7 +736,7 @@
       background: var(--white);
       border-radius: 16px;
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
@@ -748,6 +751,7 @@
       justify-content: space-between;
       position: sticky;
       top: 0;
+      z-index: 5;
     }
 
     .modal-close { color: var(--slate-300); font-size: 1.3rem; font-weight: 800; }
@@ -755,6 +759,74 @@
     .form-group { display: flex; flex-direction: column; gap: 5px; }
     .form-group label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--slate-600); }
     .form-control { padding: 9px 11px; border: 1.5px solid var(--slate-300); border-radius: 9px; font-size: 0.88rem; font-weight: 600; }
+
+    /* LISTA DE SELEÇÃO EM LOTE NO MODAL DE TRANSFERÊNCIA */
+    .batch-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .batch-select-all-btn {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--blue-800);
+      background: var(--blue-100);
+      padding: 5px 10px;
+      border-radius: 7px;
+    }
+
+    .batch-counter-pill {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--emerald-600);
+      background: var(--emerald-50);
+      border: 1px solid var(--emerald-500);
+      padding: 4px 9px;
+      border-radius: 7px;
+    }
+
+    .batch-workers-box {
+      max-height: 210px;
+      overflow-y: auto;
+      border: 1.5px solid var(--slate-300);
+      border-radius: 10px;
+      background: var(--slate-50);
+    }
+
+    .batch-worker-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 11px;
+      border-bottom: 1px solid var(--slate-200);
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--slate-800);
+      user-select: none;
+    }
+
+    .batch-worker-item:last-child { border-bottom: none; }
+    .batch-worker-item:hover { background: var(--blue-100); }
+
+    .batch-worker-item input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--emerald-600);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .batch-worker-sub {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--slate-500);
+      margin-left: auto;
+      white-space: nowrap;
+    }
 
     .dest-tabs {
       display: grid;
@@ -848,7 +920,7 @@
         <div class="header-controls">
           <div class="date-box">
             <button type="button" class="date-nav-btn" onclick="changeDate(-1)">&lsaquo;</button>
-            <input type="date" id="dateSelector" class="date-input mono" value="2026-11-18" />
+            <input type="date" id="dateSelector" class="date-input mono" />
             <button type="button" class="date-nav-btn" onclick="changeDate(1)">&rsaquo;</button>
           </div>
 
@@ -924,17 +996,28 @@
     </div>
   </div>
 
-  <!-- MODAL: TRANSFERIR COLABORADOR -->
+  <!-- MODAL: TRANSFERÊNCIA INDIVIDUAL OU EM LOTE -->
   <div id="transferModal" class="modal-backdrop">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>&#8644; Movimentar / Transferir Colaborador</h3>
+        <h3>&#8644; Transferir Colaboradores</h3>
         <button type="button" class="modal-close" onclick="closeModal('transferModal')">&times;</button>
       </div>
       <form class="modal-body" onsubmit="confirmTransfer(event)">
         <div class="form-group">
-          <label>Colaborador</label>
-          <select id="selectTransferWorker" class="form-control"></select>
+          <label>Filtrar equipe para seleção em lote</label>
+          <select id="selectBatchFilterTeam" class="form-control" onchange="renderBatchWorkersList()"></select>
+        </div>
+
+        <div class="form-group">
+          <div class="batch-toolbar">
+            <label>Selecione um ou vários colaboradores</label>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button type="button" class="batch-select-all-btn" onclick="toggleSelectAllBatch()">Marcar / Desmarcar Todos</button>
+              <span id="batchSelectedCount" class="batch-counter-pill mono">0 sel.</span>
+            </div>
+          </div>
+          <div id="batchWorkersList" class="batch-workers-box"></div>
         </div>
 
         <div class="form-group">
@@ -970,7 +1053,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-whatsapp">Confirmar</button>
+        <button type="submit" class="btn btn-whatsapp">Confirmar Transferência</button>
       </form>
     </div>
   </div>
@@ -1030,9 +1113,17 @@
       var DEFAULT_FIREBASE_URL = 'https://efetivo-das-obras-default-rtdb.firebaseio.com';
       var DEFAULT_ROOM_CODE = 'obras-cls-principal';
 
-      var DEFAULT_DATE = '2026-11-18';
-      var STORAGE_KEY = 'efetivo_obras_pwa_v13';
-      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v13';
+      function getTodayISO() {
+        var now = new Date();
+        var y = now.getFullYear();
+        var m = String(now.getMonth() + 1).padStart(2, '0');
+        var d = String(now.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + d;
+      }
+
+      var TODAY_ISO = getTodayISO();
+      var STORAGE_KEY = 'efetivo_obras_pwa_v14';
+      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v14';
       var deferredInstallPrompt = null;
 
       var STATUS_SECTIONS = [
@@ -1041,6 +1132,12 @@
         { key: 'FERIAS', label: 'FÉRIAS' },
         { key: 'EXAMES', label: 'EXAMES' }
       ];
+
+      function sortByNameAZ(list) {
+        return list.slice().sort(function (a, b) {
+          return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+        });
+      }
 
       function getDefaultCatalog() {
         return [
@@ -1088,7 +1185,7 @@
       }
 
       var state = {
-        currentDate: DEFAULT_DATE,
+        currentDate: TODAY_ISO,
         activeFilter: 'ALL',
         searchQuery: '',
         catalog: getDefaultCatalog(),
@@ -1096,7 +1193,8 @@
         days: {},
         statuses: {},
         transferMode: 'status',
-        selectedStatusChoice: 'FALTA'
+        selectedStatusChoice: 'FALTA',
+        batchSelectedIds: {}
       };
 
       function esc(str) {
@@ -1113,7 +1211,7 @@
           var map = {};
           for (var i = 0; i < state.roster.length; i++) {
             var w = state.roster[i];
-            map[w.id] = dateStr === DEFAULT_DATE ? Boolean(w.present) : false;
+            map[w.id] = false;
           }
           state.days[dateStr] = map;
         }
@@ -1150,6 +1248,8 @@
             if (parsed.statuses) state.statuses = parsed.statuses;
           }
         } catch (e) {}
+        state.currentDate = getTodayISO();
+        document.getElementById('dateSelector').value = state.currentDate;
         getDayMap(state.currentDate);
         getDayStatusMap(state.currentDate);
       }
@@ -1375,14 +1475,14 @@
         var pairs = getPairs();
         var html = '';
 
-        // 1. Renderiza Equipes nas Obras
+        // 1. Renderiza Equipes nas Obras (ORDEM ALFABÉTICA CRESCENTE)
         for (var i = 0; i < pairs.length; i++) {
           var pair = pairs[i];
           if (state.activeFilter !== 'ALL' && state.activeFilter !== pair.key) continue;
 
-          var allMembers = state.roster.filter(function (w) {
+          var allMembers = sortByNameAZ(state.roster.filter(function (w) {
             return w.obra === pair.obra && w.lider === pair.lider && !statusMap[w.id];
-          });
+          }));
           var filtered = allMembers.filter(function (w) {
             return !state.searchQuery || w.nome.toUpperCase().indexOf(state.searchQuery) !== -1;
           });
@@ -1410,7 +1510,7 @@
               html += '    </div>';
               html += '  </div>';
               html += '  <div class="worker-actions-right">';
-              html += '    <button type="button" class="btn-row-transfer" onclick="event.stopPropagation(); openTransferModal(\'' + esc(w.id) + '\')">&#8644; Transferir</button>';
+              html += '    <button type="button" class="btn-row-transfer" title="Transferir" onclick="event.stopPropagation(); openTransferModal(\'' + esc(w.id) + '\')">&#8644;</button>';
               html += '    <div class="x-checkbox">' + (isPres ? '<span class="x-mark">X</span>' : '') + '</div>';
               html += '  </div>';
               html += '</div>';
@@ -1419,14 +1519,14 @@
           html += '</div>';
         }
 
-        // 2. Renderiza Seções: FALTA, ATESTADO, FÉRIAS, EXAMES
+        // 2. Renderiza Seções: FALTA, ATESTADO, FÉRIAS, EXAMES (ORDEM ALFABÉTICA CRESCENTE)
         for (var s = 0; s < STATUS_SECTIONS.length; s++) {
           var sec = STATUS_SECTIONS[s];
           if (state.activeFilter !== 'ALL' && state.activeFilter !== 'STATUS_' + sec.key) continue;
 
-          var secMembers = state.roster.filter(function (w) {
+          var secMembers = sortByNameAZ(state.roster.filter(function (w) {
             return statusMap[w.id] === sec.key;
-          });
+          }));
           var secFiltered = secMembers.filter(function (w) {
             return !state.searchQuery || w.nome.toUpperCase().indexOf(state.searchQuery) !== -1;
           });
@@ -1451,7 +1551,7 @@
               html += '  <div class="status-worker-bottom">';
               html += '    <span class="team-tag">' + esc(sw.obra + ' / ' + sw.lider) + '</span>';
               html += '    <div class="status-actions-group">';
-              html += '      <button type="button" class="btn-row-transfer" onclick="openTransferModal(\'' + esc(sw.id) + '\')">&#8644; Alterar</button>';
+              html += '      <button type="button" class="btn-row-transfer" title="Alterar" onclick="openTransferModal(\'' + esc(sw.id) + '\')">&#8644;</button>';
               html += '      <button type="button" class="btn-return-obra" onclick="returnWorkerToObra(\'' + esc(sw.id) + '\')">&#8617; Retornar à Obra</button>';
               html += '    </div>';
               html += '  </div>';
@@ -1464,7 +1564,7 @@
         document.getElementById('teamsContainer').innerHTML = html;
       }
 
-      /* MODAL DE TRANSFERÊNCIA (OCORRÊNCIA OU OUTRA OBRA) */
+      /* MODAL DE TRANSFERÊNCIA INDIVIDUAL OU EM LOTE */
       window.setTransferMode = function (mode) {
         state.transferMode = mode;
         var isStatus = mode === 'status';
@@ -1485,12 +1585,84 @@
         }
       };
 
+      function getFilteredBatchWorkers() {
+        var teamFilter = document.getElementById('selectBatchFilterTeam').value;
+        var sorted = sortByNameAZ(state.roster);
+        if (teamFilter === 'ALL') return sorted;
+        return sorted.filter(function (w) {
+          return (w.obra + '|' + w.lider) === teamFilter;
+        });
+      }
+
+      function updateBatchSelectedCount() {
+        var count = 0;
+        for (var id in state.batchSelectedIds) {
+          if (state.batchSelectedIds[id]) count++;
+        }
+        document.getElementById('batchSelectedCount').textContent = count + ' sel.';
+      }
+
+      window.toggleBatchWorker = function (id) {
+        if (state.batchSelectedIds[id]) {
+          delete state.batchSelectedIds[id];
+        } else {
+          state.batchSelectedIds[id] = true;
+        }
+        updateBatchSelectedCount();
+      };
+
+      window.toggleSelectAllBatch = function () {
+        var list = getFilteredBatchWorkers();
+        var allChecked = list.length > 0 && list.every(function (w) { return Boolean(state.batchSelectedIds[w.id]); });
+        for (var i = 0; i < list.length; i++) {
+          if (allChecked) {
+            delete state.batchSelectedIds[list[i].id];
+          } else {
+            state.batchSelectedIds[list[i].id] = true;
+          }
+        }
+        renderBatchWorkersList();
+      };
+
+      window.renderBatchWorkersList = function () {
+        var list = getFilteredBatchWorkers();
+        var html = '';
+        for (var i = 0; i < list.length; i++) {
+          var w = list[i];
+          var checked = Boolean(state.batchSelectedIds[w.id]);
+          html += '<label class="batch-worker-item">';
+          html += '  <input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="toggleBatchWorker(\'' + esc(w.id) + '\')" />';
+          html += '  <span>' + esc(w.nome) + '</span>';
+          html += '  <span class="batch-worker-sub">' + esc(w.obra + '/' + w.lider) + '</span>';
+          html += '</label>';
+        }
+        document.getElementById('batchWorkersList').innerHTML = html || '<div style="padding:12px;font-size:0.8rem;color:var(--slate-500);">Nenhum colaborador nesta equipe.</div>';
+        updateBatchSelectedCount();
+      };
+
       window.openTransferModal = function (workerId) {
-        var selW = document.getElementById('selectTransferWorker');
-        selW.innerHTML = state.roster.map(function (w) {
-          return '<option value="' + esc(w.id) + '">' + esc(w.nome) + ' (' + esc(w.obra + '/' + w.lider) + ')</option>';
-        }).join('');
-        if (workerId) selW.value = workerId;
+        state.batchSelectedIds = {};
+        if (workerId) {
+          state.batchSelectedIds[workerId] = true;
+        }
+
+        var pairs = getPairs();
+        var selFilter = document.getElementById('selectBatchFilterTeam');
+        var filterHtml = '<option value="ALL">Todas as Equipes (' + state.roster.length + ')</option>';
+        for (var p = 0; p < pairs.length; p++) {
+          var pair = pairs[p];
+          filterHtml += '<option value="' + esc(pair.key) + '">' + esc(pair.obra + ' — Líder: ' + pair.lider) + '</option>';
+        }
+        selFilter.innerHTML = filterHtml;
+
+        if (workerId) {
+          var targetWorker = state.roster.find(function (w) { return w.id === workerId; });
+          if (targetWorker) {
+            selFilter.value = targetWorker.obra + '|' + targetWorker.lider;
+          }
+        }
+
+        renderBatchWorkersList();
 
         var selO = document.getElementById('selectTransferObra');
         selO.innerHTML = state.catalog.map(function (c) {
@@ -1514,28 +1686,46 @@
 
       window.confirmTransfer = function (e) {
         e.preventDefault();
-        var id = document.getElementById('selectTransferWorker').value;
-        var w = state.roster.find(function (x) { return x.id === id; });
-        if (!w) return;
+        var selectedIds = [];
+        for (var id in state.batchSelectedIds) {
+          if (state.batchSelectedIds[id]) selectedIds.push(id);
+        }
+
+        if (selectedIds.length === 0) {
+          showToast('Selecione pelo menos um colaborador!');
+          return;
+        }
 
         var map = getDayMap(state.currentDate);
         var statusMap = getDayStatusMap(state.currentDate);
 
         if (state.transferMode === 'status') {
-          statusMap[w.id] = state.selectedStatusChoice;
-          map[w.id] = false;
+          for (var i = 0; i < selectedIds.length; i++) {
+            var wid = selectedIds[i];
+            statusMap[wid] = state.selectedStatusChoice;
+            map[wid] = false;
+          }
           saveLocal();
           renderAll();
-          showToast(w.nome + ' enviado para ' + state.selectedStatusChoice + '!');
+          showToast(selectedIds.length === 1
+            ? '1 colaborador enviado para ' + state.selectedStatusChoice + '!'
+            : selectedIds.length + ' colaboradores enviados para ' + state.selectedStatusChoice + '!');
         } else {
           var obra = document.getElementById('selectTransferObra').value;
           var lider = document.getElementById('selectTransferLider').value;
-          w.obra = obra;
-          w.lider = lider;
-          delete statusMap[w.id];
+          for (var j = 0; j < selectedIds.length; j++) {
+            var w = state.roster.find(function (x) { return x.id === selectedIds[j]; });
+            if (w) {
+              w.obra = obra;
+              w.lider = lider;
+              delete statusMap[w.id];
+            }
+          }
           saveLocal();
           renderAll();
-          showToast(w.nome + ' transferido para ' + obra + ' (' + lider + ')');
+          showToast(selectedIds.length === 1
+            ? '1 colaborador transferido para ' + obra + ' (' + lider + ')!'
+            : selectedIds.length + ' colaboradores transferidos para ' + obra + ' (' + lider + ')!');
         }
         closeModal('transferModal');
       };
@@ -1604,7 +1794,7 @@
         showToast('Marcações e ocorrências do dia zeradas.');
       };
 
-      /* WHATSAPP E EXCEL */
+      /* WHATSAPP E EXCEL (EM ORDEM ALFABÉTICA) */
       window.copyWhatsAppReport = function () {
         var map = getDayMap(state.currentDate);
         var statusMap = getDayStatusMap(state.currentDate);
@@ -1624,7 +1814,9 @@
 
         for (var i = 0; i < pairs.length; i++) {
           var p = pairs[i];
-          var pres = activeRoster.filter(function (w) { return w.obra === p.obra && w.lider === p.lider && map[w.id]; });
+          var pres = sortByNameAZ(activeRoster.filter(function (w) {
+            return w.obra === p.obra && w.lider === p.lider && map[w.id];
+          }));
           lines.push('\n*OBRA: ' + p.obra + ' - LÍDER: ' + p.lider + ' (' + pres.length + '):*');
           for (var j = 0; j < pres.length; j++) {
             lines.push((j + 1) + '. ' + pres[j].nome);
@@ -1633,7 +1825,9 @@
 
         for (var s = 0; s < STATUS_SECTIONS.length; s++) {
           var sec = STATUS_SECTIONS[s];
-          var secList = state.roster.filter(function (w) { return statusMap[w.id] === sec.key; });
+          var secList = sortByNameAZ(state.roster.filter(function (w) {
+            return statusMap[w.id] === sec.key;
+          }));
           if (secList.length > 0) {
             lines.push('\n*' + sec.label + ' (' + secList.length + '):*');
             for (var k = 0; k < secList.length; k++) {
@@ -1654,9 +1848,10 @@
       window.exportExcelCSV = function () {
         var map = getDayMap(state.currentDate);
         var statusMap = getDayStatusMap(state.currentDate);
+        var sortedRoster = sortByNameAZ(state.roster);
         var csv = '\uFEFFItem;Presença (X);Situação;Colaborador;Obra;Líder;Data\n';
-        for (var i = 0; i < state.roster.length; i++) {
-          var w = state.roster[i];
+        for (var i = 0; i < sortedRoster.length; i++) {
+          var w = sortedRoster[i];
           var st = statusMap[w.id] || (map[w.id] ? 'PRESENTE' : 'AUSENTE');
           var mark = (!statusMap[w.id] && map[w.id]) ? 'X' : '';
           csv += (i + 1) + ';' + mark + ';' + st + ';' + w.nome + ';' + w.obra + ';' + w.lider + ';' + formatDateBR(state.currentDate) + '\n';
