@@ -472,6 +472,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
+      min-width: 0;
     }
 
     .team-dot {
@@ -479,6 +480,13 @@
       height: 9px;
       border-radius: 50%;
       background: var(--emerald-500);
+      flex-shrink: 0;
+    }
+
+    .team-header-right {
+      display: flex;
+      align-items: center;
+      gap: 7px;
       flex-shrink: 0;
     }
 
@@ -490,6 +498,21 @@
       padding: 3px 9px;
       border-radius: 7px;
       white-space: nowrap;
+    }
+
+    .btn-delete-team {
+      background: var(--rose-600);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 4px 9px;
+      border-radius: 7px;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-delete-team:hover {
+      background: var(--rose-700);
     }
 
     .worker-row {
@@ -1122,8 +1145,8 @@
       }
 
       var TODAY_ISO = getTodayISO();
-      var STORAGE_KEY = 'efetivo_obras_pwa_v15';
-      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v15';
+      var STORAGE_KEY = 'efetivo_obras_pwa_v16';
+      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v16';
       var deferredInstallPrompt = null;
 
       var STATUS_SECTIONS = [
@@ -1382,6 +1405,36 @@
         showToast('Colaborador retornado para a equipe da obra!');
       };
 
+      window.deleteEmptyTeam = function (obra, lider) {
+        var count = state.roster.filter(function (w) {
+          return w.obra === obra && w.lider === lider;
+        }).length;
+
+        if (count > 0) {
+          showToast('Só é possível excluir equipes com zero colaboradores!');
+          return;
+        }
+
+        for (var i = state.catalog.length - 1; i >= 0; i--) {
+          if (state.catalog[i].obra === obra) {
+            state.catalog[i].lideres = state.catalog[i].lideres.filter(function (l) {
+              return l !== lider;
+            });
+            if (state.catalog[i].lideres.length === 0) {
+              state.catalog.splice(i, 1);
+            }
+          }
+        }
+
+        if (state.activeFilter === (obra + '|' + lider)) {
+          state.activeFilter = 'ALL';
+        }
+
+        saveLocal();
+        renderAll();
+        showToast('Equipe ' + obra + ' — ' + lider + ' excluída!');
+      };
+
       window.changeDate = function (delta) {
         var p = state.currentDate.split('-');
         var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
@@ -1439,11 +1492,9 @@
 
         for (var p = 0; p < pairs.length; p++) {
           var pair = pairs[p];
-          /* Total geral cadastrado nesta equipe (inclui presentes, ausentes, férias, atestado, falta e exames) */
           var allTeamMembers = state.roster.filter(function (w) {
             return w.obra === pair.obra && w.lider === pair.lider;
           });
-          /* Presentes ativos nesta equipe */
           var pres = allTeamMembers.filter(function (w) {
             return !statusMap[w.id] && Boolean(map[w.id]);
           }).length;
@@ -1497,7 +1548,12 @@
           html += '<div class="card team-card">';
           html += '  <div class="team-card-header">';
           html += '    <div class="team-card-title"><span class="team-dot"></span><span>OBRA: ' + esc(pair.obra) + ' &mdash; LÍDER: ' + esc(pair.lider) + '</span></div>';
-          html += '    <span class="team-counter-badge mono">' + presCount + ' / ' + totalTeamMembers.length + '</span>';
+          html += '    <div class="team-header-right">';
+          if (totalTeamMembers.length === 0) {
+            html += '      <button type="button" class="btn-delete-team" onclick="deleteEmptyTeam(\'' + esc(pair.obra) + '\', \'' + esc(pair.lider) + '\')">Excluir</button>';
+          }
+          html += '      <span class="team-counter-badge mono">' + presCount + ' / ' + totalTeamMembers.length + '</span>';
+          html += '    </div>';
           html += '  </div>';
 
           if (filtered.length === 0) {
