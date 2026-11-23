@@ -486,8 +486,37 @@
     .team-header-right {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       flex-shrink: 0;
+    }
+
+    .order-btns-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .btn-order-team {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-order-team:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .btn-order-team:disabled {
+      opacity: 0.28;
+      cursor: default;
     }
 
     .team-counter-badge {
@@ -1145,8 +1174,8 @@
       }
 
       var TODAY_ISO = getTodayISO();
-      var STORAGE_KEY = 'efetivo_obras_pwa_v16';
-      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v16';
+      var STORAGE_KEY = 'efetivo_obras_pwa_v17';
+      var INSTALLED_FLAG_KEY = 'efetivo_obras_installed_v17';
       var deferredInstallPrompt = null;
 
       var STATUS_SECTIONS = [
@@ -1213,6 +1242,7 @@
         searchQuery: '',
         catalog: getDefaultCatalog(),
         roster: getDefaultRoster(),
+        teamOrder: [], // Lista ordenada de chaves 'OBRA|LIDER'
         days: {},
         statuses: {},
         transferMode: 'status',
@@ -1227,6 +1257,45 @@
       function formatDateBR(iso) {
         var p = iso.split('-');
         return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso;
+      }
+
+      function syncTeamOrder() {
+        var rawPairs = [];
+        for (var i = 0; i < state.catalog.length; i++) {
+          var item = state.catalog[i];
+          for (var j = 0; j < item.lideres.length; j++) {
+            rawPairs.push(item.obra + '|' + item.lideres[j]);
+          }
+        }
+        var validSet = {};
+        for (var k = 0; k < rawPairs.length; k++) validSet[rawPairs[k]] = true;
+
+        var nextOrder = [];
+        if (Array.isArray(state.teamOrder)) {
+          for (var m = 0; m < state.teamOrder.length; m++) {
+            var key = state.teamOrder[m];
+            if (validSet[key] && nextOrder.indexOf(key) === -1) {
+              nextOrder.push(key);
+            }
+          }
+        }
+        for (var n = 0; n < rawPairs.length; n++) {
+          if (nextOrder.indexOf(rawPairs[n]) === -1) {
+            nextOrder.push(rawPairs[n]);
+          }
+        }
+        state.teamOrder = nextOrder;
+      }
+
+      function getPairs() {
+        syncTeamOrder();
+        var list = [];
+        for (var i = 0; i < state.teamOrder.length; i++) {
+          var key = state.teamOrder[i];
+          var parts = key.split('|');
+          list.push({ key: key, obra: parts[0], lider: parts[1] });
+        }
+        return list;
       }
 
       function getDayMap(dateStr) {
@@ -1249,10 +1318,12 @@
       }
 
       function saveLocal() {
+        syncTeamOrder();
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify({
             catalog: state.catalog,
             roster: state.roster,
+            teamOrder: state.teamOrder,
             days: state.days,
             statuses: state.statuses
           }));
@@ -1267,10 +1338,12 @@
             var parsed = JSON.parse(raw);
             if (parsed.catalog) state.catalog = parsed.catalog;
             if (parsed.roster) state.roster = parsed.roster;
+            if (parsed.teamOrder) state.teamOrder = parsed.teamOrder;
             if (parsed.days) state.days = parsed.days;
             if (parsed.statuses) state.statuses = parsed.statuses;
           }
         } catch (e) {}
+        syncTeamOrder();
         state.currentDate = getTodayISO();
         document.getElementById('dateSelector').value = state.currentDate;
         getDayMap(state.currentDate);
@@ -1294,6 +1367,7 @@
           body: JSON.stringify({
             catalog: state.catalog,
             roster: state.roster,
+            teamOrder: state.teamOrder,
             days: state.days,
             statuses: state.statuses,
             updatedAt: Date.now()
@@ -1316,11 +1390,14 @@
           if (data && data.roster) {
             state.catalog = data.catalog || state.catalog;
             state.roster = data.roster;
+            if (Array.isArray(data.teamOrder)) state.teamOrder = data.teamOrder;
             state.days = data.days || state.days;
             state.statuses = data.statuses || state.statuses;
+            syncTeamOrder();
             localStorage.setItem(STORAGE_KEY, JSON.stringify({
               catalog: state.catalog,
               roster: state.roster,
+              teamOrder: state.teamOrder,
               days: state.days,
               statuses: state.statuses
             }));
@@ -1405,6 +1482,21 @@
         showToast('Colaborador retornado para a equipe da obra!');
       };
 
+      window.moveTeamOrder = function (key, direction) {
+        syncTeamOrder();
+        var idx = state.teamOrder.indexOf(key);
+        if (idx === -1) return;
+        var targetIdx = idx + direction;
+        if (targetIdx < 0 || targetIdx >= state.teamOrder.length) return;
+
+        var temp = state.teamOrder[idx];
+        state.teamOrder[idx] = state.teamOrder[targetIdx];
+        state.teamOrder[targetIdx] = temp;
+
+        saveLocal();
+        renderAll();
+      };
+
       window.deleteEmptyTeam = function (obra, lider) {
         var count = state.roster.filter(function (w) {
           return w.obra === obra && w.lider === lider;
@@ -1426,7 +1518,10 @@
           }
         }
 
-        if (state.activeFilter === (obra + '|' + lider)) {
+        var key = obra + '|' + lider;
+        state.teamOrder = state.teamOrder.filter(function (k) { return k !== key; });
+
+        if (state.activeFilter === key) {
           state.activeFilter = 'ALL';
         }
 
@@ -1456,17 +1551,6 @@
         state.searchQuery = document.getElementById('searchInput').value.trim().toUpperCase();
         renderLists();
       };
-
-      function getPairs() {
-        var list = [];
-        for (var i = 0; i < state.catalog.length; i++) {
-          var item = state.catalog[i];
-          for (var j = 0; j < item.lideres.length; j++) {
-            list.push({ key: item.obra + '|' + item.lideres[j], obra: item.obra, lider: item.lideres[j] });
-          }
-        }
-        return list;
-      }
 
       function renderAll() {
         var map = getDayMap(state.currentDate);
@@ -1528,7 +1612,7 @@
         var pairs = getPairs();
         var html = '';
 
-        // 1. Renderiza Equipes nas Obras (ORDEM ALFABÉTICA CRESCENTE)
+        // 1. Renderiza Equipes nas Obras (NA ORDEM DEFINIDA PELO USUÁRIO + ALFABÉTICA INTERNA)
         for (var i = 0; i < pairs.length; i++) {
           var pair = pairs[i];
           if (state.activeFilter !== 'ALL' && state.activeFilter !== pair.key) continue;
@@ -1545,10 +1629,19 @@
           if (state.searchQuery && filtered.length === 0) continue;
 
           var presCount = activeMembers.filter(function (w) { return Boolean(map[w.id]); }).length;
+          var isFirst = i === 0;
+          var isLast = i === pairs.length - 1;
+
           html += '<div class="card team-card">';
           html += '  <div class="team-card-header">';
           html += '    <div class="team-card-title"><span class="team-dot"></span><span>OBRA: ' + esc(pair.obra) + ' &mdash; LÍDER: ' + esc(pair.lider) + '</span></div>';
           html += '    <div class="team-header-right">';
+          if (state.activeFilter === 'ALL' && pairs.length > 1) {
+            html += '      <div class="order-btns-group">';
+            html += '        <button type="button" class="btn-order-team" title="Subir grupo" ' + (isFirst ? 'disabled' : '') + ' onclick="moveTeamOrder(\'' + esc(pair.key) + '\', -1)">&#9650;</button>';
+            html += '        <button type="button" class="btn-order-team" title="Descer grupo" ' + (isLast ? 'disabled' : '') + ' onclick="moveTeamOrder(\'' + esc(pair.key) + '\', 1)">&#9660;</button>';
+            html += '      </div>';
+          }
           if (totalTeamMembers.length === 0) {
             html += '      <button type="button" class="btn-delete-team" onclick="deleteEmptyTeam(\'' + esc(pair.obra) + '\', \'' + esc(pair.lider) + '\')">Excluir</button>';
           }
@@ -1804,6 +1897,7 @@
         var existing = state.catalog.find(function (c) { return c.obra === obra; });
         if (!existing) state.catalog.push({ obra: obra, lideres: [lider] });
         else if (existing.lideres.indexOf(lider) === -1) existing.lideres.push(lider);
+        syncTeamOrder();
         document.getElementById('inputNewObra').value = '';
         document.getElementById('inputNewLider').value = '';
         saveLocal();
@@ -1855,7 +1949,7 @@
         showToast('Marcações e ocorrências do dia zeradas.');
       };
 
-      /* WHATSAPP E EXCEL (EM ORDEM ALFABÉTICA) */
+      /* WHATSAPP E EXCEL (EM ORDEM ALFABÉTICA E NA ORDEM DOS GRUPOS) */
       window.copyWhatsAppReport = function () {
         var map = getDayMap(state.currentDate);
         var statusMap = getDayStatusMap(state.currentDate);
